@@ -1,13 +1,11 @@
 package com.mykafka.controller;
 
+import com.mykafka.dto.Customer;
 import com.mykafka.service.KafkaMessagePublisher;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/producer")
@@ -15,6 +13,11 @@ public class EventController {
 
     @Autowired
     private KafkaMessagePublisher publisher;
+
+    @PostMapping
+    public void sendObject(@RequestBody Customer customer) {
+        publisher.sendObjectToTopic(customer);
+    }
 
     @GetMapping("/{message}")
     public ResponseEntity<?> publishMessage(@PathVariable String message) {
